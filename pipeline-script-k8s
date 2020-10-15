@@ -1,0 +1,39 @@
+pipeline {
+    agent any  #this app can be deployed either on master or any nodes
+    stages {
+        stage('checkout repo') {
+                steps {
+                        git url: 'https://github.com/Adithya119/DevOpsClassCodes'
+              }
+            }
+             
+        stage('build artifact') {
+                steps {
+                        sh 'mvn clean package'
+              }
+            }
+            
+        stage('build docker image') {
+                steps {
+                        sh 'docker build -t adithya119/addressbook .'
+              }
+            }
+            
+        stage('push doker image') {
+                steps {
+                        withCredentials([string(credentialsid: 'Docker_hub_acc', variable: 'Docker_hub_acc')]) { 
+                     sh "docker login -u adithya119 -p ${Docker_hub_acc}" 
+                     }
+                     sh 'docker push adithya119/addressbook'
+               }
+             }
+             
+         stage('deploy-to-k8s-master') {
+                steps {
+                        sh 'kubectl apply -f addressbook-k8s-deploy.yml'
+                }
+              } 
+              
+      }
+  }
+  
