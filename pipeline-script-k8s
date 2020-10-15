@@ -21,7 +21,7 @@ pipeline {
             
         stage('push doker image') {
                 steps {
-                        withCredentials([string(credentialsid: 'Docker_hub_acc', variable: 'Docker_hub_acc')]) { 
+                        withCredentials([string(credentialsId: 'Docker_hub_acc', variable: 'Docker_hub_acc')]) { 
                      sh "docker login -u adithya119 -p ${Docker_hub_acc}" 
                      }
                      sh 'docker push adithya119/addressbook'
