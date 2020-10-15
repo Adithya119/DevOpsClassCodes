@@ -1,5 +1,5 @@
 pipeline {
-    agent any  #this app can be deployed either on master or any nodes
+    agent any 
     stages {
         stage('checkout repo') {
                 steps {
